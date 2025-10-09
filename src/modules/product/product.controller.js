@@ -2,14 +2,21 @@ import Product from "./product.model.js";
 
 export const createProduct = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, description, price, stock, categories, imageUrl} = req.body;
     const existingProduct = await Product.findOne({ title });
 
     if (existingProduct) {
       res.status(400).json({ message: "produit déjà existant" });
     }
 
-    const newProduct = new Product(req.body);
+    const newProduct = new Product({
+        title ,
+        description ,
+        price ,
+        stock ,
+        categories ,
+        imageUrl
+    });
     const product = await newProduct.save();
     res.status(201).json({ success: true, data: product });
   } catch (error) {
@@ -26,7 +33,7 @@ export const createProduct = async (req, res) => {
   }
 };
 
-export const getproducts = async (req, res) => {
+export const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
 
