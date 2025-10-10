@@ -56,7 +56,7 @@ export const getCategoryById = async (req, res) => {
   try {
     const id = req.params.categoryId;
     // return res.json({ data: id });
-    const category = await category.findById(id);
+    const category = await Category.findById(id);
 
     if (!category) {
       res.status(404).json({ message: "aucun categorie trouvé" });
