@@ -2,14 +2,19 @@ import User from "./user.model.js";
 
 export const createUser = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { fullname, email, password, role } = req.body;
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       res.status(400).json({ message: "utilisateur déjà exist" });
     }
 
-    const newUser = new User(req.body);
+    const newUser = new User({
+        fullname,
+        email,
+        password,
+        role: role || "user"
+    });
     const user = await newUser.save();
     res.status(201).json({ success: true, data: user });
   } catch (error) {
@@ -51,6 +56,7 @@ export const getUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const id = req.params.userId;
+    // return res.json({ data: id });
     const user = await User.findById(id);
 
     if (!user) {
