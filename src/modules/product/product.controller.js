@@ -2,38 +2,29 @@ import Product from "./product.model.js";
 
 /**
  * @swagger
+ * tags:
+ *   name: Produits
+ *   description: Gestion des produits
+ */
+
+/**
+ * @swagger
  * /api/products:
  *   post:
  *     summary: Créer un nouveau produit
  *     requestBody:
  *       required: true
+ *       description: Données du produit à créer
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               description:
- *                 type: string
- *               price:
- *                 type: number
- *               stock:
- *                 type: number
- *               categories:
- *                 type: array
- *                 items:
- *                   type: string
- *               imageUrl:
- *                 type: string
  *     responses:
  *       201:
  *         description: Produit créé avec succès
  *       500:
  *         description: Erreur serveur
  **/
-
-
 export const createProduct = async (req, res, next) => {
   try {
     const { title, description, price, stock, categories, imageUrl } = req.body;
@@ -53,7 +44,6 @@ export const createProduct = async (req, res, next) => {
   }
 };
 
-
 /**
  * @swagger
  * /api/products:
@@ -66,29 +56,11 @@ export const createProduct = async (req, res, next) => {
  *           application/json:
  *             schema:
  *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   title:
- *                     type: string
- *                   description:
- *                     type: string
- *                   price:
- *                     type: number
- *                   stock:
- *                     type: number
- *                   categories:
- *                     type: array
- *                     items:
- *                       type: string
- *                   imageUrl:
- *                     type: string
  *       404:
  *         description: Aucun produit trouvé
  *       500:
  *         description: Erreur serveur
  */
-
 export const getProducts = async (req, res, next) => {
   try {
     const products = await Product.find();
@@ -105,13 +77,34 @@ export const getProducts = async (req, res, next) => {
   }
 };
 
+
+/**
+ * @swagger
+ * /api/products/{productId}:
+ *   get:
+ *     summary: Récupérer un produit par son id
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         description: id du produit
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Produit trouvé
+ *       404:
+ *         description: Produit non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
 export const getProductById = async (req, res, next) => {
   try {
     const id = req.params.productId;
     const product = await Product.findById(id);
 
     if (!product) {
-      const err = new Error("Aucun produit trouvé");
+      const err = new Error("produit non trouvé");
       err.statusCode = 404;
       throw err;
     }
@@ -122,6 +115,33 @@ export const getProductById = async (req, res, next) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/products/{productId}:
+ *   put:
+ *     summary: Mettre à jour un produit par ID
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         description: ID du produit à mettre à jour
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       description: Données du produit à mettre à jour
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Produit mis à jour avec succès
+ *       404:
+ *         description: Produit non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
 export const updateProduct = async (req, res, next) => {
   try {
     const id = req.params.productId;
@@ -146,6 +166,26 @@ export const updateProduct = async (req, res, next) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/products/{productId}:
+ *   delete:
+ *     summary: Supprimer un produit par ID
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         description: ID du produit à supprimer
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Produit supprimé avec succès
+ *       404:
+ *         description: Produit non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
 export const deleteProduct = async (req, res, next) => {
   try {
     const id = req.params.productId;
