@@ -4,8 +4,10 @@ import { connectDB } from "./config/db.js";
 import userRoutes from "./modules/user/user.route.js"
 import productRoutes from "./modules/product/product.route.js";
 import categoryRoutes from "./modules/category/category.route.js"
-import { logger, notFound, ErrorHandler } from "./middlewares/loggerMiddleware.js";
-import { swaggerDocs } from "./swagger.js";
+import { logger } from "./middlewares/loggerMiddleware.js";
+import { notFound } from "./middlewares/notFoundMiddleware.js"
+import { ErrorHandler } from "./middlewares/errorHandlerMiddleware.js"
+import { swaggerDocs } from "../swagger.js";
 
 dotenv.config();
 connectDB();
